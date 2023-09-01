@@ -1,0 +1,172 @@
+EESchema Schematic File Version 2  date Tue May 28 13:07:32 2013
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:special
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+EELAYER 27 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date "28 may 2013"
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L ATMEGA328P-P ATMEGA328P-P1
+U 1 1 51A4D78B
+P 5750 3700
+F 0 "ATMEGA328P-P1" H 5000 4950 40  0000 L BNN
+F 1 "ATMEGA328P-P" H 6150 2300 40  0000 L BNN
+F 2 "DIL28" H 5750 3700 30  0000 C CIN
+F 3 "~" H 5750 3700 60  0000 C CNN
+	1    5750 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L +12V #PWR01
+U 1 1 51A4D7C3
+P 2350 3700
+F 0 "#PWR01" H 2350 3650 20  0001 C CNN
+F 1 "+12V" H 2350 3800 30  0000 C CNN
+F 2 "" H 2350 3700 60  0000 C CNN
+F 3 "" H 2350 3700 60  0000 C CNN
+	1    2350 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR02
+U 1 1 51A4D7E5
+P 2350 3900
+F 0 "#PWR02" H 2350 3900 30  0001 C CNN
+F 1 "GND" H 2350 3830 30  0001 C CNN
+F 2 "" H 2350 3900 60  0000 C CNN
+F 3 "" H 2350 3900 60  0000 C CNN
+	1    2350 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L 7805 U1
+U 1 1 51A4D874
+P 3250 3350
+F 0 "U1" H 3400 3154 60  0000 C CNN
+F 1 "7805" H 3250 3550 60  0000 C CNN
+F 2 "~" H 3250 3350 60  0000 C CNN
+F 3 "~" H 3250 3350 60  0000 C CNN
+	1    3250 3350
+	1    0    0    -1  
+$EndComp
+Connection ~ 3250 3600
+$Comp
+L CP1 C1
+U 1 1 51A4DA67
+P 2700 3750
+F 0 "C1" H 2750 3850 50  0000 L CNN
+F 1 "CP1" H 2750 3650 50  0000 L CNN
+F 2 "~" H 2700 3750 60  0000 C CNN
+F 3 "~" H 2700 3750 60  0000 C CNN
+	1    2700 3750
+	1    0    0    -1  
+$EndComp
+Wire Bus Line
+	3250 3950 2350 3950
+Wire Bus Line
+	2700 3300 2850 3300
+Wire Bus Line
+	3250 3550 3250 3950
+$Comp
+L CP1 C2
+U 1 1 51A4DAA3
+P 4000 3350
+F 0 "C2" H 4050 3450 50  0000 L CNN
+F 1 "CP2" H 4050 3250 50  0000 L CNN
+F 2 "~" H 4000 3350 60  0000 C CNN
+F 3 "~" H 4000 3350 60  0000 C CNN
+	1    4000 3350
+	1    0    0    -1  
+$EndComp
+Wire Bus Line
+	3250 3550 4750 3550
+Wire Bus Line
+	4000 2900 4850 2900
+Wire Bus Line
+	4850 4800 4000 4800
+Wire Bus Line
+	4000 4800 4000 3550
+Wire Bus Line
+	4850 4800 4850 4900
+$Comp
+L LED LED1
+U 1 1 51A4DBD1
+P 4550 3350
+F 0 "LED1" H 4550 3450 50  0000 C CNN
+F 1 "LED" H 4550 3250 50  0000 C CNN
+F 2 "~" H 4550 3350 60  0000 C CNN
+F 3 "~" H 4550 3350 60  0000 C CNN
+	1    4550 3350
+	1    0    0    -1  
+$EndComp
+Wire Bus Line
+	3650 3150 4350 3150
+Wire Bus Line
+	4350 3150 4350 3350
+Wire Bus Line
+	4750 3550 4750 3350
+Wire Bus Line
+	3650 3150 3650 3300
+Wire Bus Line
+	4000 3150 4000 2900
+Wire Bus Line
+	2700 3550 2350 3550
+Wire Bus Line
+	2350 3550 2350 3700
+Wire Bus Line
+	2700 3300 2700 3550
+Wire Bus Line
+	4850 2600 4850 3200
+Connection ~ 4850 2600
+Connection ~ 4850 2900
+Connection ~ 4750 3350
+Connection ~ 4350 3350
+Connection ~ 4000 3150
+Connection ~ 4000 3550
+Connection ~ 4850 4800
+Connection ~ 4850 4900
+Connection ~ 3650 3300
+Connection ~ 2850 3300
+Connection ~ 2700 3550
+Connection ~ 2350 3700
+Connection ~ 2700 3950
+Connection ~ 2350 3900
+$EndSCHEMATC

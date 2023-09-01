@@ -1,0 +1,67 @@
+Basic Architecture:
+
+init script:
+
+storageCheck()
+	Check for USB storage
+		If no USB drive detected, run setLED.py Red off, setLED.py Yellow on
+			See if the process can sit and wait for storage to appear
+		If Storage is present
+			set storage=device node of storage device
+
+mountStorage(string)
+	mount storageDevice to /mnt
+	if errorlevel=0, setLED.py Yellow off, setLED.py Green on, continue //Mount successful
+	if errorlevel=1, setLED.py Yellow off, setLED.py Red on, storageCheck() //Keep trying
+
+main()
+	storageCheck()
+	mountStorage(storage)
+	python CarSense.py
+
+
+SetLED.py:
+
+Set constants for Red, Yellow, and Green pins
+main(Pin, mode)
+
+	case:
+		toLower(pin) == "red"
+			if toLower(mode) == "on"
+				Set Red pin to high
+			if toLower(mode) == "off"
+				Set Red pin to low
+		toLower(pin) == "green"
+			if toLower(mode) == "on"
+				Set Green pin to high
+			if toLower(mode) == "off"
+				Set Green pin to low
+		toLower(pin) == "yellow"
+			if toLower(mode) == "on"
+				Set Yellow pin to high
+			if toLower(mode) == "off"
+				Set Yellow pin to low
+
+return 0
+
+
+CarSense:
+
+Set up LED pin constants
+Set i2c address constants:  LFInside, LFCenter, LFOutside, RFInside, RFCenter, RFOutside
+
+//Setup checks
+	Check board revision
+		if board revision 1, set i2cDev to 0
+		if board revision 2, set i2cDev to 1
+	return
+
+main()
+	Set LED Pin modes
+	i2cCheck()
+
+i2cCheck()
+	Check for the presence of i2c devices at addresses LFInside, LFCenter, LFOutside, RFInside, RFCenter, RFOutside
+		if sensors exist, set i2c LED to green, return
+		if sensors do not exist, set i2c LED to Red, and run i2cCheck() again.  This will loop until the sensors come online.
+

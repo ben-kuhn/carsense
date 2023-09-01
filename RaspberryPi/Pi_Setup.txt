@@ -1,0 +1,86 @@
+Pi Setup:
+
+Install Arch Image
+Set hostname in /etc/hostname
+	echo "DevPi" > /etchostname
+
+Set timezone
+	ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+
+Update system
+	pacman -Syu 
+
+Install yaourt
+	pacman -S yaourt
+
+#Edit startup configuration
+nano /boot/config.txt
+	Make sure GPU Memory is 128
+	Add the following lines to the end to enable the camera:
+		start_file=start_x.elf
+		fixup_file=fixup_x.dat
+
+Load i2c modules
+	echo "i2c-dev" >> /etc/modules-load.d/raspberrypi.conf
+
+Install Python
+	pacman -S python
+
+Add a user
+	groups:  sys tty disk lp wheel uucp locate games network video audio optical floppy storage scanner power
+
+Install sudo
+	pacman -S sudo
+
+Edit sudoers and enable wheel group
+Add camera stuff (/opt/vc/bin) to path in /etc/profile
+
+Create udev rules to set camera and i2c permissions:
+echo 'SUBSYSTEMS=="vchiq", KERNEL=="vchiq", MODE="0777", GROUP="video"' >> /etc/udev/rules.d/00-videodev.rules
+echo 'SUBSYSTEMS=="i2c-dev", KERNEL=="i2c-0", MODE="0777", GROUP="users"' >> /etc/udev/rules.d/01-i2c.rules
+echo 'SUBSYSTEMS=="i2c-dev", KERNEL=="i2c-1", MODE="0777", GROUP="users"' >> /etc/udev/rules.d/01-i2c.rules
+
+Install i2ctools
+	pacman -S i2c-tools
+
+Install BCM2835 C Libraries
+	pacman -S libbcm2835
+
+Install Python GPIO libraries
+	yaourt -S python-raspberry-gpio
+
+Install ffmpeg
+	pacman -S ffmpeg
+
+### Command to record video:
+raspivid -t <time> -o - | ffmpeg -r 30 -i - -vcodec copy video-out.mp4
+
+### Kernel Compilation - Obviously not needed on Non-Dev RPis 
+### May want to install screen and run from there
+### Do this as a non-root user
+
+https://wiki.archlinux.org/index.php/Kernels/Compilation/Arch_Build_System
+
+sudo pacman -S abs base-devel git xmlto docbook-xsl uboot-mkimage
+mkdir /opt/alarm-aur
+cd /opt/alarm-aur
+git clone https://github.com/archlinuxarm/PKGBUILDs.git
+mkdir Custom
+cp PKGBUILDs/core/linux-raspberrypi Custom/linux-raspberrypi-fixedi2c
+cd Custom/linux-raspberrypi-fixedi2c
+nano PKGBUILD
+	Find:
+	build() {
+  		git clone --depth 1 git://github.com/raspberrypi/linux.git	
+
+  	Replace with:
+  	build() {
+  		git clone --depth 1 https://github.com/jjackowski/linux.git
+  	find and replace "linux-raspberrypi" and "linux-headers-raspberrypi" with "linux-raspberrypi-fixedi2c" and "linux-headers-raspberrypi-fixedi2c"
+
+mv linux-raspberrypi.install linux-raspberrypi-fixedi2c.install 
+makepkg # This took 9.5 hours
+
+### Install Kernel
+pacman -U linux-raspberrypi-fixedi2c-3.6.11-14-armv6h.pkg.tar.xz
+pacman -U linux-headers-raspberrypi-fixedi2c-3.6.11-14-armv6h.pkg.tar.xz
